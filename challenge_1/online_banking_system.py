@@ -7,7 +7,6 @@
 #* The system must display a menu for users to perform transactions.
 from passlib.context import CryptContext
 
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 class log_in():
@@ -33,7 +32,20 @@ class log_in():
             
         return pwd_context.verify(password, self.password)
     
+    #In this features, i have to managed balance or amount = 0
+    def deposit(self,deposit) -> None:
+        self.balance += deposit
+        print("Your deposit was sucesfully")
     
-    def wrong_credentials(self, credential) -> None:
-        #not needed cause already implemented in verify_password
-        pass
+    def withdraw(self,withdraw) -> None:
+        self.balance -= withdraw
+        print("Amount retired")
+    
+    def view(self) -> None:
+        print(f"Your balance is ${self.balance}")
+    
+    def transfer(self, account, amount):
+        self.balance -= amount
+        account.balance += amount
+        print("The Transfer was succesfully")
+    
