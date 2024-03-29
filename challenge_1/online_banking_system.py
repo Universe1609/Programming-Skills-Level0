@@ -10,8 +10,20 @@ from passlib.context import CryptContext
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 class Account():
+    """A class to represent a bank account for an online banking system.
+
+    Attributes:
+        username (str): The account username.
+        password (str): The hashed password for the account.
+        balance (int): The account balance. Initialized to $2000.
+        login_attempts (int): The number of unsuccessful login attempts.
+        locked (bool): Status indicating whether the account is locked.
+    """
     
     def __init__(self, username, password) -> None:
+        
+        """Initialize a new account with a username and password."""
+        
         self.username = username
         self.set_security_password(password)
         #self.hashed = False
@@ -20,9 +32,21 @@ class Account():
         self.locked = False
                 
     def set_security_password(self, password) -> None:
+        
+        """Hash the provided password and store it."""
+        
         self.password = pwd_context.hash(password)
         
     def verify_password(self, password) -> bool:
+        
+        """Verify the provided password against the stored hash.
+
+        Locks the account after 3 unsuccessful attempts.
+
+        Returns:
+            bool: True if the password is correct, False otherwise.
+        """
+        
         if self.locked:
             print("Account is locked")
             return False
@@ -42,17 +66,32 @@ class Account():
     
     #In this features, i have to managed balance or amount = 0
     def deposit(self,deposit) -> None:
+        
+        """Increase the account balance by the deposit amount."""
+        
         self.balance += deposit
         print("Your deposit was sucesfully")
     
     def withdraw(self,withdraw) -> None:
+        
+        """Decrease the account balance by the withdrawal amount."""
+
         self.balance -= withdraw
         print("Amount retired")
     
     def view(self) -> None:
+        
+        """Print the current account balance."""
+        
         print(f"Your balance is ${self.balance}")
     
     def transfer(self, account, amount):
+        
+        """Transfer amount to another account.
+
+        Decreases the sender's balance and increases the recipient's balance.
+        """
+        
         self.balance -= amount
         account.balance += amount
         print("The Transfer was succesfully")
@@ -127,3 +166,7 @@ def main():
             
 if __name__ == "__main__":
     main()
+    
+    # Note: This script requires a specific version of bcrypt library (e.g., bcrypt==4.0.1)
+# due to compatibility issues with newer versions. Ensure to install the correct version
+# with `pip install bcrypt==4.0.1`.
