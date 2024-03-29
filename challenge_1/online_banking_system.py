@@ -167,6 +167,6 @@ def main():
 if __name__ == "__main__":
     main()
     
-    # Note: This script requires a specific version of bcrypt library (e.g., bcrypt==4.0.1)
+# Note: This script requires a specific version of bcrypt library (e.g., bcrypt==4.0.1)
 # due to compatibility issues with newer versions. Ensure to install the correct version
 # with `pip install bcrypt==4.0.1`.
