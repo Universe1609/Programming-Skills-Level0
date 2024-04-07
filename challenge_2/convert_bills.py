@@ -5,6 +5,9 @@
 #The system should ask the user if they want to perform another operation. If they choose to do so, it should restart the process; otherwise, the system should close.
 #Set a minimum and maximum amount for each currency, it can be of your choice.
 
+
+def apply_commision(amount):
+    return amount * 0.99
 def main():
     while True:
         print("\nWelcome to the currency converter, Please choice between these currency")
@@ -14,19 +17,31 @@ def main():
         print("4. EUR")
         print("5. TRY")
         print("6. GBP")
-        initial_currency = input("Select initial currency: ")
-        exchange_currency = input("Select currency you want to exchange to: ")
-        amount = input("What is the amount you want to exchange: ")
-  
-            #this part is for change feature
-        
+        initial_currency = int(input("Select initial currency: "))
+        exchange_currency = int(input("Select currency you want to exchange to: "))
+        amount = float(input("What is the amount you want to exchange: "))
         print("\nWhat do you want to do next?")
         print("1. Withdraw")
         print("2. Go to main menu")
         
-            #feature for withdraw
+        choice = int(input("Enter your choice: "))
+        
+        #feature for withdraw
+        if choice == 1 :
+            amount = apply_commision(amount)
+            print(f'the new amount is: {amount}')
             
-        print("Do you want to make another operation? (Y/n): ")
+            yes_or_not = input("Do you want to make another operation? (Y/n): ")
+            
+            if yes_or_not == 'Y':
+                return True
+            if yes_or_not == 'n':
+                break
+        if choice == 2 :
+            return True
+            
+        
+        
         
             #Conditional
 
