@@ -161,6 +161,7 @@ def main():
             print("Invalid option, try again.")
     
     #Testing if password is correctly hashed
+    #print(accounts)
     #print(accounts[username].username)
     #print(accounts[username].password)
             
