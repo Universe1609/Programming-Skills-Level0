@@ -17,9 +17,21 @@ def main():
         print("4. EUR")
         print("5. TRY")
         print("6. GBP")
-        initial_currency = int(input("Select initial currency: "))
-        exchange_currency = int(input("Select currency you want to exchange to: "))
+        
+        while True:
+            initial_currency = int(input("Select initial currency: "))
+            exchange_currency = int(input("Select currency you want to exchange to: "))
+            if initial_currency == exchange_currency:
+                print('initial and exchange currency has not to be the same, please make again')
+            else:
+                break
+            
         amount = float(input("What is the amount you want to exchange: "))
+        
+        if amount > 10000 or amount< 200:
+            print('the amount is out of the limit to make the operation')
+            continue
+        
         print("\nWhat do you want to do next?")
         print("1. Withdraw")
         print("2. Go to main menu")
@@ -33,17 +45,10 @@ def main():
             
             yes_or_not = input("Do you want to make another operation? (Y/n): ")
             
-            if yes_or_not == 'Y':
-                return True
             if yes_or_not == 'n':
                 break
-        if choice == 2 :
-            return True
             
         
         
-        
-            #Conditional
-
 if __name__ == "__main__":
     main()
