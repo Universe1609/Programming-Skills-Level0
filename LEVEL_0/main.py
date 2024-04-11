@@ -13,7 +13,7 @@ from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated = "auto")
 
-class enrollment():
+class account():
     
     def __init__(self, username, password) -> None:
         
@@ -76,12 +76,33 @@ def enroll_user(first_name, last_name, program_name, campus_name):
     
     if len(program_campus['enroll']) >= program_campus['slots']:
         print("No available slots, please select other campus")
-        return 
+        return False
     #
     # if len(program_campus['enroll']) < program_campus['slots']:
     program_campus['enroll'].append(f"{first_name} {last_name}")
     print(f"Enrolled in program: {program_name} in campus: {campus_name}")
     return True
+
+def enrollment(first_name, last_name, program):
+    
+    while True:
+        print("++++++++++++++++++++++++++++++++++++")
+        print("There are three campus you can choice:")
+        print("1. London")
+        print("2. Manchester")
+        print("3. Liverpool")
+        print("++++++++++++++++++++++++++++++++++++")
+        
+        print("Please enter your choice")
+        campus = input("Campus you want")
+        campus = convert_campus(campus)
+        
+        if enroll_user(first_name, last_name, program, campus):
+            print(f"Succesfully enrolled")
+            return False
+        else:
+            print("Not available slots in this campus, please select other campus")
+        
 
 def convert_program(program):
     program_mapping = {
@@ -104,8 +125,6 @@ accounts = {}
 current_account = None
 
 while True:
-    
-    
     programs = {
         'Computer Science': {'London': {'slots': 1,
                                         'enroll': []},
@@ -142,7 +161,7 @@ while True:
             current_account = accounts[username]
             print("Login Succesfull")
     else:
-        accounts[username] = enrollment(username, password)
+        accounts[username] = account(username, password)
         current_account = accounts[username]
     #Verify credentials
     
@@ -160,16 +179,7 @@ while True:
     program = input("Program you want: ")
     program = convert_program(program)
     
-    print("++++++++++++++++++++++++++++++++++++")
-    print("There are three campus you can choice:")
-    print("1. London")
-    print("2. Manchester")
-    print("3. Liverpool")
-    print("++++++++++++++++++++++++++++++++++++")
+    enrollment(first_name, last_name, program)
     
-    print("Please enter your choice")
-    campus = input("Campus you want")
-    campus = convert_campus(campus) 
+
     
-    if current_account:
-        enroll_user(first_name, last_name, program, campus)
