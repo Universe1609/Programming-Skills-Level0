@@ -5,7 +5,7 @@
 #* 	(X)	Each program has only 5 available slots. The system will store the data of each registered user, 
 # and if it exceeds the limit, it should display a message indicating the program is unavailable.
 #* 	(X)	If login information is incorrect three times, the system should be locked.
-#* 	( )	The user must choose a campus from three cities: London, Manchester, Liverpool.
+#* 	(X)	The user must choose a campus from three cities: London, Manchester, Liverpool.
 #* 	( )	In London, there is 1 slot per program; in Manchester, there are 3 slots per program, and in Liverpool,
 #       there is 1 slot per program. If the user selects a program at a campus that has no available slots,
 #       the system should display the option to enroll in the program at another campus.
@@ -84,7 +84,6 @@ def enroll_user(first_name, last_name, program_name, campus_name):
     return True
 
 def enrollment(first_name, last_name, program):
-    
     while True:
         print("++++++++++++++++++++++++++++++++++++")
         print("There are three campus you can choice:")
@@ -102,7 +101,7 @@ def enrollment(first_name, last_name, program):
             return False
         else:
             print("Not available slots in this campus, please select other campus")
-        
+            
 
 def convert_program(program):
     program_mapping = {
@@ -121,11 +120,7 @@ def convert_campus(campus):
     }
     return campus_mapping.get(campus, "Invalid Program")
 
-accounts = {}
-current_account = None
-
-while True:
-    programs = {
+programs = {
         'Computer Science': {'London': {'slots': 1,
                                         'enroll': []},
                              'Manchester': {'slots': 3,
@@ -151,8 +146,20 @@ while True:
                  'Liverpool': {'slots': 3,
                                'enroll': []}}
         }
-        
+
+accounts = {}
+while True:
+    current_account = None
     print("Please Enter your credencialts:")
+    exit = int(input("If you want to exit, please enter 0, if not, enter other number: "))
+    if exit == 0:
+        print("++++++++++++++++++++++++++++++++++++")
+        print("These are all the accounts and list of enrollments:")
+        print(accounts)
+        print(programs)
+        print("++++++++++++++++++++++++++++++++++++")
+        break
+    
     username = input("Username: ")
     password = input("Password: ")
     
@@ -163,6 +170,7 @@ while True:
     else:
         accounts[username] = account(username, password)
         current_account = accounts[username]
+        print("Account created")
     #Verify credentials
     
     print("++++++++++++++++++++++++++++++++++++")
@@ -179,7 +187,11 @@ while True:
     program = input("Program you want: ")
     program = convert_program(program)
     
-    enrollment(first_name, last_name, program)
+    if enrollment(first_name, last_name, program) == False:
+        print("Finishing session")
+    
+    
+    
     
 
     
