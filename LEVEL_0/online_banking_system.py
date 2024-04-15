@@ -61,7 +61,7 @@ class Account():
                 self.locked = True
                 print("Failed 3 times or more, Account Locked")
                 return False 
-            
+        
         return pwd_context.verify(password, self.password)
     
     #In this features, i have to managed balance or amount = 0
@@ -96,9 +96,41 @@ class Account():
         account.balance += amount
         print("The Transfer was succesfully")
 
+def verify_account():
+    while True:
+        username = input("Username: ")
+        password = input("Password: ")
+        
+        if username in accounts:
+            
+            user_account = accounts[username]
+            
+            if user_account.locked:
+                print("Account is locked due to multiple failed login attempts.")
+                return None
+            
+            if accounts[username].verify_password(password):
+                #current_account = accounts[username]
+                print("Login Succesfull")
+                return user_account
+            
+            else:
+                print("Wrong Password, please try again")
+                if user_account.locked:
+                    print("Your account has been locked")
+                    return None
+                continue
+        else:
+            accounts[username] = Account(username, password)
+            #current_account = accounts[username]
+            print("Account created")
+            return accounts[username]
+
+
+accounts = {} # Store accounts (maybe a little db)
 
 def main():
-    accounts = {} # Store accounts (maybe a little db)
+    
     
     current_account = None
     
@@ -113,17 +145,11 @@ def main():
         choice = input("Select an option: ")
         
         if choice == '1':
-            username = input("Username: " )
-            password = input("Password: ")
+            current_account = verify_account()
+            if current_account is None:
+                print("Exiting the system because locked account")
+                break
             
-            if username in accounts:
-                if accounts[username].verify_password(password):
-                    current_account = accounts[username]
-                    print("Login Successful.")
-            else:
-                accounts[username] = Account(username, password)
-                current_account = accounts[username]
-                print("Account created and logged")
         elif choice == '2':
             if current_account:
                 amount = float(input("Please enter amount to deposit: "))

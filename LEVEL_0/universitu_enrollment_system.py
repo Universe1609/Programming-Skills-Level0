@@ -6,7 +6,7 @@
 # and if it exceeds the limit, it should display a message indicating the program is unavailable.
 #* 	(X)	If login information is incorrect three times, the system should be locked.
 #* 	(X)	The user must choose a campus from three cities: London, Manchester, Liverpool.
-#* 	( )	In London, there is 1 slot per program; in Manchester, there are 3 slots per program, and in Liverpool,
+#* 	(X)	In London, there is 1 slot per program; in Manchester, there are 3 slots per program, and in Liverpool,
 #       there is 1 slot per program. If the user selects a program at a campus that has no available slots,
 #       the system should display the option to enroll in the program at another campus.
 from passlib.context import CryptContext
@@ -37,11 +37,12 @@ class account():
             return True
         
         else:
-            self.login_attempts += 1 
+            self.login_attempts += 1
             if self.login_attempts >= 3:
                 self.locked = True
                 print("Failed 3 times, Account Locked")
                 return False
+            return False
             
     #def enroll_user(self, programs, first_name, last_name, program, campus) -> bool:
     #    self.program = programs.get(program)
@@ -120,6 +121,37 @@ def convert_campus(campus):
     }
     return campus_mapping.get(campus, "Invalid Program")
 
+def verify_account():
+    while True:
+        username = input("Username: ")
+        password = input("Password: ")
+        
+        if username in accounts:
+            
+            user_account = accounts[username]
+            
+            if user_account.locked:
+                print("Account is locked due to multiple failed login attempts.")
+                return None
+            
+            if accounts[username].verify_password(password):
+                #current_account = accounts[username]
+                print("Login Succesfull")
+                return user_account
+            
+            else:
+                print("Wrong Password, please try again")
+                if user_account.locked:
+                    print("Your account has been locked")
+                    return None
+                continue
+        else:
+            accounts[username] = account(username, password)
+            #current_account = accounts[username]
+            print("Account created")
+            return accounts[username]
+        
+
 programs = {
         'Computer Science': {'London': {'slots': 1,
                                         'enroll': []},
@@ -160,18 +192,11 @@ while True:
         print("++++++++++++++++++++++++++++++++++++")
         break
     
-    username = input("Username: ")
-    password = input("Password: ")
+    current_account = verify_account()
     
-    if username in accounts:
-        if accounts[username].verify_password(password):
-            current_account = accounts[username]
-            print("Login Succesfull")
-    else:
-        accounts[username] = account(username, password)
-        current_account = accounts[username]
-        print("Account created")
-    #Verify credentials
+    if current_account is None:
+        print("Exiting the system because locked account")
+        break
     
     print("++++++++++++++++++++++++++++++++++++")
     print("These are the available programs: ")
